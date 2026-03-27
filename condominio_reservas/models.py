@@ -1,10 +1,22 @@
 from django.db import models
 
 class Usuario(models.Model):
+    
+    STATUS_CHOICES = [
+        ('Pendente', 'Pendente'),
+        ('Aprovado', 'Aprovado'),
+        ('Negado', 'Negado'),
+    ]
+    
     nome = models.CharField(max_length=200)
     email = models.EmailField(unique=True)
     senha = models.CharField(max_length=100)
-    statusConta = models.CharField(max_length=50, default="Pendente")
+    
+    statusConta = models.CharField(
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default='Pendente'
+    )
 
     class Meta:
         abstract = True
@@ -23,7 +35,6 @@ class AreaComum(models.Model):
     STATUS_CHOICES = [
         ('Disponivel', 'Disponível'),
         ('EmManutencao', 'Em Manutenção'),
-        ('Ocupado', 'Ocupado'),
     ]
     nome = models.CharField(max_length=100)
     capacidade = models.IntegerField()

@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -7,63 +6,234 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'css/estiloSindico.css' %}" rel="stylesheet">
+    <title>Condomínio Estrela - Painel do Síndico</title>
+    
+    <style>
+        /* Paleta de Cores e Estilos Premium (Padrão Canguru) */
+        body { 
+            background-color: #f4f6f9;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        /* Navbar Azul Escuro */
+        .navbar-custom {
+            background-color: #1a2a3a; 
+            padding: 15px 0;
+        }
+        .navbar-custom .navbar-brand {
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .navbar-custom .navbar-brand:hover { color: #e2e8f0; }
+        
+        .navbar-custom .nav-link {
+            color: #94a3b8;
+            font-weight: 500;
+            margin: 0 10px;
+        }
+        .navbar-custom .nav-link:hover, .navbar-custom .nav-link.active {
+            color: #ffffff;
+        }
 
-    <title>Condomínio Estrela</title>
+        /* Botão de Perfil Avatar (Roxo para o Síndico) */
+        .btn-perfil {
+            background-color: #8b5cf6; 
+            color: white;
+            font-weight: bold;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-perfil:hover {
+            background-color: #7c3aed;
+            color: white;
+        }
 
+        /* Estilo dos Cards Base */
+        .card-dash { 
+            border-radius: 12px; 
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        .card-dash:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+        }
+
+        .card-grafico {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        /* Cores Internas dos Cards */
+        .bg-card-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+        .bg-card-orange { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+        .bg-card-green { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        
+        .card-title-number { font-size: 2.5rem; font-weight: 700; margin-bottom: 5px; }
+    </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="main-box">
-            <div class="header-title">
-                <h5 class="text-muted">Sistema do Condomínio</h5>
-                <h1>CONDOMÍNIO ESTRELA</h1>
-                <a href="{% url 'login' %}" class="btn btn-sm btn-danger mt-2">Sair</a>
-            </div>
 
-            <div class="row mb-4">
-                <div class="col">
-                    <h2>Painel do Síndico</h2>
-                    <p class="text-muted">Visão estratégica e relatórios de ocupação.</p>
-                </div>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-custom mb-5 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">Condomínio Estrela</a>
+            
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link active" href="#">Painel</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Áreas</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Reservas</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Moradores</a></li>
+            </ul>
 
-            <div class="row mb-4">
-                <div class="col-md-8">
-                    <div class="card border-danger shadow-sm mb-4">
-                        <div class="card-header bg-danger text-white">
-                            <strong>Conflitos de Reserva (Atenção)</strong>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text text-danger">⚠️ <strong>Área:</strong> Salão de Festas - <strong>Data:</strong> 25/03/2026</p>
-                            <p class="small text-muted">Duas solicitações pendentes para o mesmo horário. Verificar prioridade.</p>
-                            <button class="btn btn-sm btn-danger">Resolver Conflito</button>
+            <div class="dropdown ms-auto">
+                <button class="btn btn-perfil rounded-circle dropdown-toggle" type="button" id="perfilMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                    CS </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="perfilMenu" style="border-radius: 10px;">
+                    <li><a class="dropdown-item py-2" href="perfil.html">Meu Perfil</a></li>
+                    <li><hr class="dropdown-divider m-0"></li>
+                    <li><a class="dropdown-item py-2 text-danger" href="{% url 'login' %}">Sair</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1100px;">
+        
+        <div class="mb-5">
+            <h2 class="fw-bold mb-1" style="color: #1e293b;">Painel do Síndico</h2>
+            <p class="text-muted">Visão estratégica e relatórios de ocupação do condomínio.</p>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <a href="#" class="text-decoration-none">
+                    <div class="card card-dash bg-card-blue h-100">
+                        <div class="card-body text-center p-4">
+                            <h3 class="card-title-number">15</h3>
+                            <p class="card-text fw-medium fs-5 mb-0">Moradores</p>
+                            <small class="text-white-50 mt-2 d-block">Acessar lista completa ➔</small>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-white"><strong>Relatórios Rápidos</strong></div>
-                        <div class="card-body d-grid gap-2">
-                            <button class="btn btn-outline-primary">Ocupação Mensal (PDF)</button>
-                            <button class="btn btn-outline-primary">Balancete de Reservas</button>
-                            <button class="btn btn-outline-dark">Configurações do Prédio</button>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="#" class="text-decoration-none">
+                    <div class="card card-dash bg-card-orange h-100">
+                        <div class="card-body text-center p-4">
+                            <h3 class="card-title-number">8</h3>
+                            <p class="card-text fw-medium fs-5 mb-0">Reservas Pendentes</p>
+                            <small class="text-white-50 mt-2 d-block">Gerenciar pagamentos ➔</small>
                         </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="#" class="text-decoration-none">
+                    <div class="card card-dash bg-card-green h-100">
+                        <div class="card-body text-center p-4">
+                            <h3 class="card-title-number">3</h3>
+                            <p class="card-text fw-medium fs-5 mb-0">Reservas Hoje</p>
+                            <small class="text-white-50 mt-2 d-block">Ver ocupação atual ➔</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            
+            <div class="col-md-8">
+                <div class="card card-grafico h-100">
+                    <div class="card-header bg-white p-4 border-bottom-0">
+                        <h5 class="fw-bold mb-0" style="color: #1e293b;">Uso de áreas comuns (Últimos 30 dias)</h5>
+                    </div>
+                    <div class="card-body text-center pb-4">
+                        <div class="mb-4 d-flex justify-content-center">
+                            <div style="position: relative; height: 250px; width: 250px;">
+                                <canvas id="graficoOcupacao"></canvas>
+                            </div>
+                        </div>
+                        <p class="text-muted fw-medium mb-0">
+                            Churrasqueira (45%) &nbsp;|&nbsp; Salão de Festas (30%) &nbsp;|&nbsp; Piscina (15%) &nbsp;|&nbsp; Quadra (10%)
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="card shadow-sm">
-                <div class="card-header bg-white"><strong>Uso das Áreas Comuns (Top 3)</strong></div>
-                <div class="card-body text-center py-5 bg-light">
-                    <div class="mb-3 text-center">
-                        <img src="{% static 'img/grafico_pizza.png' %}" alt="Gráfico de Ocupação" style="max-width: 300px;">
+            <div class="col-md-4">
+                <div class="card card-grafico h-100">
+                    <div class="card-header bg-white p-4 border-bottom-0">
+                        <h5 class="fw-bold mb-0" style="color: #1e293b;">Relatórios Rápidos</h5>
                     </div>
-                    <p>1. Churrasqueira (45%) | 2. Salão (30%) | 3. Piscina (25%)</p>
+                    <div class="card-body p-4 pt-0 d-grid gap-3">
+                        <button class="btn btn-outline-primary py-2 fw-medium text-start px-3">
+                            📄 Ocupação Mensal (PDF)
+                        </button>
+                        <button class="btn btn-outline-primary py-2 fw-medium text-start px-3">
+                            💰 Balancete de Reservas
+                        </button>
+                        <button class="btn btn-outline-dark py-2 fw-medium text-start px-3 mt-4">
+                            ⚙️ Configurações do Prédio
+                        </button>
+                    </div>
                 </div>
             </div>
-            </div>
+
+        </div>
+
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctx = document.getElementById('graficoOcupacao').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Churrasqueira', 'Salão de Festas', 'Piscina', 'Quadra'],
+                    datasets: [{
+                        data: [45, 30, 15, 10],
+                        backgroundColor: [
+                            '#f59e0b', // Laranja
+                            '#3b82f6', // Azul
+                            '#0ea5e9', // Azul claro
+                            '#10b981'  // Verde
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

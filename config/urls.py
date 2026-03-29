@@ -19,8 +19,14 @@ from django.urls import path
 from condominio_reservas import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls), # Painel nativo do Django
+    
+    # Rotas de Autenticação
     path('', views.login_view, name='login'),
+    path('cadastro/', views.cadastro_view, name='cadastro'),
+    path('sair/', views.logout_view, name='logout'),
+    
+    # Rotas dos Painéis
     path('morador/', views.home_morador, name='home_morador'),
     path('admin-home/', views.home_admin, name='home_admin'),
     path('sindico/', views.home_sindico, name='home_sindico'),

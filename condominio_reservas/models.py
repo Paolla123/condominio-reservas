@@ -1,35 +1,48 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class Usuario(models.Model):
-    
+# A Classe Usuario agora herda do sistema de segurança nativo do Django
+class Usuario(AbstractUser):
     STATUS_CHOICES = [
         ('Pendente', 'Pendente'),
         ('Aprovado', 'Aprovado'),
         ('Negado', 'Negado'),
     ]
     
-    nome = models.CharField(max_length=200)
+    # Vamos forçar o e-mail a ser o campo principal, em vez de um "username" qualquer
     email = models.EmailField(unique=True)
-    senha = models.CharField(max_length=100)
     
     statusConta = models.CharField(
         max_length=50,
         choices=STATUS_CHOICES,
-        default='Pendente'
+        default='Pendente' # Todo mundo nasce pendente, até o admin aprovar!
     )
 
-    class Meta:
-        abstract = True
+    # Dizemos ao Django que o login será feito pelo EMAIL e não pelo username padrão
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
+    def __str__(self):
+        return self.email
+
+# O Morador continua herdando de Usuario, ganhando automaticamente login e senha
 class Morador(Usuario):
     bloco = models.CharField(max_length=10)
     apartamento = models.CharField(max_length=10)
 
+    class Meta:
+        verbose_name = "Morador"
+        verbose_name_plural = "Moradores"
+
 class Administrador(Usuario):
-    pass
+    class Meta:
+        verbose_name = "Administrador"
+        verbose_name_plural = "Administradores"
 
 class Sindico(Administrador):
-    pass
+    class Meta:
+        verbose_name = "Síndico"
+        verbose_name_plural = "Síndicos"
 
 class AreaComum(models.Model):
     STATUS_CHOICES = [

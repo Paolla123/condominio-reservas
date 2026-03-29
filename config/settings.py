@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'condominio_db',   # Nome do banco que você vai criar no PgAdmin
+        'USER': 'postgres',        # Seu usuário padrão do PostgreSQL
+        'PASSWORD': 'admin',       # Coloque AQUI a sua senha do PostgreSQL
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -122,3 +126,6 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+AUTH_USER_MODEL = 'condominio_reservas.Usuario'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
